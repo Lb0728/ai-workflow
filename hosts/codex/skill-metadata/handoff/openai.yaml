@@ -1,0 +1,6 @@
+interface:
+  display_name: "Handoff"
+  short_description: "Create a resumable work snapshot"
+  default_prompt: "Use $handoff to create a concise state snapshot for resuming this work later."
+policy:
+  allow_implicit_invocation: false

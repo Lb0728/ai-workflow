@@ -1,0 +1,1 @@
+../core/templates/self_test_report_template.md

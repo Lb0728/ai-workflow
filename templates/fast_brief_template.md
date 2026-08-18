@@ -1,0 +1,1 @@
+../core/templates/fast_brief_template.md

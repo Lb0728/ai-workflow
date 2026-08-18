@@ -1,0 +1,9 @@
+schema_version: 1
+
+task_types:
+  docs:
+    aliases: [docs, documentation]
+    workflow_key: core.workflow.tech_debt
+    loop_name: Documentation Loop
+    default_delivery_level: light_feature
+    real_environment_required: false

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Grill Me"
+  short_description: "Clarify requirements, task drafts, or Bug scope"
+  default_prompt: "Use $grill-me to clarify this request before routing to PRD, Router, or Bugfix."
+policy:
+  allow_implicit_invocation: false

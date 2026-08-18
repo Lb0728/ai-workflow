@@ -1,0 +1,1 @@
+../core/templates/issue_intake_template.md

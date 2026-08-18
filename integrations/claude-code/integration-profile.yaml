@@ -1,0 +1,14 @@
+schema_version: 1
+
+client:
+  id: claude-code
+  display_name: Claude Code
+
+skills:
+  scope: user
+  target: ~/.claude/skills
+
+persistent_rules:
+  source: rules/ai-workflow.md
+  target: .claude/rules/ai-workflow.md
+  install_required: true

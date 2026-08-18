@@ -1,0 +1,294 @@
+# State Machine — single source of truth for loop stages, decision stages,
+# transitions, required gates and default next-stage routing.
+#
+# Consumers (all read-only, no eval):
+#   - core/lib/state_machine.sh   (normalize / map / validate / route)
+#   - core/router/ai_loop_next_v2.sh
+#   - cli/commands/finish.sh
+#   - cli/commands/transition.sh
+#   - core/lib/task_card.sh       (task card schema validation enums)
+#
+# Editing rules: change a stage name or transition here first, then re-run
+# tests/run_all.sh. Do not fork a second copy of these tables into a script.
+
+schema_version: 1
+
+# ---------------------------------------------------------------------------
+# 规范词汇（任务卡 Schema 与 Router 共用的枚举真源）
+# ---------------------------------------------------------------------------
+vocabulary:
+  decision_actions: [STAY, ADVANCE, RETURN, ESCALATE, STOP, COMPLETE]
+  gate_results: [PASS, FAIL, NOT_RUN, N/A, BLOCKED, PASS_WITH_RISK, PASS_BY_CODE_REVIEW, PASS_WITH_MANUAL_VERIFICATION]
+  delivery_levels: [micro_change, light_feature, standard_delivery, high_risk_delivery]
+  self_test_levels: [quick, standard, specialized]
+  task_types: [bugfix, feature, techdebt, device]
+  priorities: [P0, P1, P2, P3, UNKNOWN]
+
+canonical_stages:
+  - requirement_breakdown
+  - analyze
+  - impact_map
+  - architecture
+  - capability
+  - alignment_pending
+  - fix_ready
+  - implement
+  - ready_for_self_test
+  - validation_pending
+  - self_test_in_progress
+  - review
+  - i18n
+  - ready_for_qa
+  - commit_ready
+  - done
+  - blocked
+
+decision_stages:
+  - requirement_breakdown
+  - bugfix_diagnosis
+  - arch_boundary
+  - coding
+  - self_test
+  - pr_review
+  - human
+  - loop_closeout
+
+# stage 别名 → 规范 stage（finish.sh 与 Router 共用的唯一 normalize 表）
+stage_aliases:
+  requirement: requirement_breakdown
+  requirement-breakdown: requirement_breakdown
+  requirement_breakdown: requirement_breakdown
+  analyze: analyze
+  analysis: analyze
+  impact: impact_map
+  impact-map: impact_map
+  impact_map: impact_map
+  plan: impact_map
+  architecture: architecture
+  arch: architecture
+  architecture-check: architecture
+  arch-boundary: architecture
+  arch_boundary: architecture
+  capability: capability
+  strategy: capability
+  capability-check: capability
+  alignment: alignment_pending
+  align: alignment_pending
+  alignment-pending: alignment_pending
+  alignment_pending: alignment_pending
+  confirm: alignment_pending
+  confirmation: alignment_pending
+  fix-ready: fix_ready
+  fix_ready: fix_ready
+  fix: fix_ready
+  implement: implement
+  coding: implement
+  code: implement
+  ready-for-self-test: ready_for_self_test
+  ready_for_self_test: ready_for_self_test
+  ready-self-test: ready_for_self_test
+  validation: validation_pending
+  validation-pending: validation_pending
+  validation_pending: validation_pending
+  selftest: self_test_in_progress
+  self-test: self_test_in_progress
+  self_test: self_test_in_progress
+  self-test-in-progress: self_test_in_progress
+  self_test_in_progress: self_test_in_progress
+  verify: self_test_in_progress
+  test: self_test_in_progress
+  review: review
+  pr-review: review
+  pr_review: review
+  ready: ready_for_qa
+  qa: ready_for_qa
+  ready-for-qa: ready_for_qa
+  ready_for_qa: ready_for_qa
+  i18n: i18n
+  ui: i18n
+  ui-check: i18n
+  done: done
+  loop-closeout: done
+  loop_closeout: done
+  commit: commit_ready
+  commit-ready: commit_ready
+  commit_ready: commit_ready
+  generate-commit-message: commit_ready
+  generate_commit_message: commit_ready
+  blocked: blocked
+  human: blocked
+
+# loop stage → decision stage（诊断/路由语义归组）
+stage_to_decision:
+  requirement_breakdown: requirement_breakdown
+  analyze: bugfix_diagnosis
+  impact_map: bugfix_diagnosis
+  fix_ready: bugfix_diagnosis
+  architecture: arch_boundary
+  capability: arch_boundary
+  alignment_pending: arch_boundary
+  implement: coding
+  ready_for_self_test: coding
+  validation_pending: self_test
+  self_test_in_progress: self_test
+  ready_for_qa: self_test
+  review: pr_review
+  i18n: pr_review
+  commit_ready: pr_review
+  blocked: human
+  done: loop_closeout
+
+# decision stage → 代表性 loop stage（决策路由显示用）
+decision_to_stage:
+  requirement_breakdown: requirement_breakdown
+  bugfix_diagnosis: analyze
+  arch_boundary: architecture
+  coding: implement
+  self_test: self_test_in_progress
+  pr_review: review
+  human: blocked
+  loop_closeout: done
+
+# 交付等级 → 强度档位
+delivery_tiers:
+  micro_change: L1
+  light_feature: L1
+  standard_delivery: L2
+  high_risk_delivery: L3
+
+# Gate 结果 → 结果类别（pass / pass_with_risk / fail / blocked / na / missing）
+gate_result_kinds:
+  PASS: pass
+  PASS_WITH_RISK: pass_with_risk
+  PASS_BY_CODE_REVIEW: pass_with_risk
+  PASS_WITH_MANUAL_VERIFICATION: pass_with_risk
+  FAIL: fail
+  BLOCKED: blocked
+  N/A: na
+
+# 决策动作迁移表：action + from → 合法 to 集合
+# 特殊动作（STAY / STOP / COMPLETE / ESCALATE）的目标约束由 Router 内联校验，
+# 此处只声明 ADVANCE / RETURN 的可达迁移。
+transitions:
+  - action: ADVANCE
+    from: requirement_breakdown
+    to: [bugfix_diagnosis, arch_boundary, coding]
+  - action: ADVANCE
+    from: bugfix_diagnosis
+    to: [arch_boundary, coding]
+  - action: ADVANCE
+    from: arch_boundary
+    to: [coding]
+  - action: ADVANCE
+    from: coding
+    to: [self_test]
+  - action: ADVANCE
+    from: self_test
+    to: [pr_review]
+  - action: ADVANCE
+    from: pr_review
+    to: [loop_closeout]
+  - action: RETURN
+    from: bugfix_diagnosis
+    to: [requirement_breakdown]
+  - action: RETURN
+    from: arch_boundary
+    to: [bugfix_diagnosis, requirement_breakdown]
+  - action: RETURN
+    from: coding
+    to: [bugfix_diagnosis, requirement_breakdown, arch_boundary]
+  - action: RETURN
+    from: self_test
+    to: [coding, bugfix_diagnosis, requirement_breakdown]
+  - action: RETURN
+    from: pr_review
+    to: [coding, bugfix_diagnosis, requirement_breakdown]
+
+# 每交付等级必需门禁（逻辑名；条件性附加门禁由 Router 内联判定：
+# Platform/Transport 仅 real_environment_required 或真实设备风险时必填，
+# Historical 在相似缺陷命中时不允许 N/A）
+required_gates:
+  micro_change: [L0, L1, L2, L3, DiffReviewLite]
+  light_feature: [L0, L1, L2, L3, DiffReviewLite]
+  standard_delivery: [L0, L1, L2, L3]
+  high_risk_delivery: [L0, L1, L2, L3, HighRisk, Architecture]
+
+# 默认下一阶段决策表。
+# 规则按文件顺序匹配，第一条命中生效；每条规则可带 0..n 个条件键，
+# 所有条件键都必须命中（键内是取值列表，任一值命中即可）。
+# 条件键：delivery_level / alignment_status / type_real_env / commit_required
+default_next:
+  - status: requirement_breakdown
+    next: analyze
+  - status: analyze
+    delivery_level: [micro_change, light_feature]
+    next: implement
+  - status: analyze
+    next: impact_map
+  - status: impact_map
+    delivery_level: [high_risk_delivery]
+    next: architecture
+  - status: impact_map
+    type_real_env: [true]
+    next: architecture
+  - status: impact_map
+    next: implement
+  - status: architecture
+    delivery_level: [high_risk_delivery]
+    alignment_status: [confirmed]
+    next: implement
+  - status: architecture
+    delivery_level: [high_risk_delivery]
+    next: alignment_pending
+  - status: architecture
+    next: implement
+  - status: capability
+    delivery_level: [high_risk_delivery]
+    alignment_status: [confirmed]
+    next: implement
+  - status: capability
+    delivery_level: [high_risk_delivery]
+    next: alignment_pending
+  - status: capability
+    next: implement
+  - status: alignment_pending
+    alignment_status: [confirmed]
+    next: implement
+  - status: alignment_pending
+    next: alignment_pending
+  - status: fix_ready
+    next: implement
+  - status: implement
+    next: ready_for_self_test
+  - status: ready_for_self_test
+    next: self_test_in_progress
+  - status: validation_pending
+    next: self_test_in_progress
+  - status: self_test_in_progress
+    delivery_level: [micro_change]
+    next: ready_for_qa
+  - status: self_test_in_progress
+    next: review
+  - status: verify
+    delivery_level: [micro_change]
+    next: ready_for_qa
+  - status: verify
+    next: review
+  - status: review
+    commit_required: [true]
+    next: commit_ready
+  - status: review
+    next: done
+  - status: i18n
+    next: review
+  - status: ready_for_qa
+    commit_required: [true]
+    next: commit_ready
+  - status: ready_for_qa
+    next: done
+  - status: commit_ready
+    next: commit_ready
+  - status: done
+    next: done
+  - status: blocked
+    next: blocked

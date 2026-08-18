@@ -1,0 +1,44 @@
+schema_version: 1
+
+project:
+  id: ai-core-demo
+  display_name: AI Core Demo Project
+  type: text-project
+  language: shell
+  framework: none
+
+adapter:
+  id: demo-project
+  migration_phase: phase5-portability-validation
+  active: true
+  config_dir: config
+  context_dir: context
+  required_configs:
+    - paths.yaml
+    - commands.yaml
+    - risk-rules.yaml
+    - gates.yaml
+    - i18n.yaml
+    - commit.yaml
+    - extensions.yaml
+    - task-types.yaml
+  required_context:
+    - router-context.md
+    - architecture-sources.md
+    - current-project-reality.md
+    - source-of-truth.md
+    - regression-surfaces.md
+
+detection:
+  required_paths:
+    - .ai-demo-project
+    - AGENTS.md
+    - scripts/static_check.sh
+
+compatibility:
+  physical_asset_owner: project-adapter
+  canonical_assets_active: true
+  protocol_routing_owner: core-with-project-adapter
+  agent_owner: core-with-project-adapter
+  router_context_active: true
+  full_adapter_routing_active: true

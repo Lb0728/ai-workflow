@@ -1,0 +1,1 @@
+../core/templates/high_risk_alignment_template.md

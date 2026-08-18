@@ -1,0 +1,18 @@
+schema_version: 1
+
+policy:
+  declaration_format: argv
+  allow_eval: false
+  doctor_executes_commands: false
+
+commands:
+  static_check:
+    argv: [bash, scripts/static_check.sh]
+  analyze:
+    argv: [bash, scripts/static_check.sh]
+  test:
+    argv: [bash, scripts/static_check.sh]
+  format_check:
+    argv: [bash, scripts/static_check.sh]
+  routing_regression:
+    argv: [bash, scripts/static_check.sh]

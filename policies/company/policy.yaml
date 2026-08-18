@@ -1,0 +1,24 @@
+schema_version: 1
+
+policy:
+  id: company-default
+  immutable: true
+  files:
+    commit: commit-convention.yaml
+    review: review-policy.md
+    security: security-policy.md
+    delivery: delivery-policy.md
+
+protected_keys:
+  - risk_levels
+  - decision_actions
+  - gate_results
+  - automatic_commit
+  - automatic_push
+  - hard_gates
+  - stop_conditions
+
+state_changes:
+  automatic_commit: false
+  automatic_push: false
+  human_confirmation_required: true

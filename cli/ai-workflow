@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+set -eu
+
+COMMAND_SOURCE="${BASH_SOURCE[0]}"
+while [ -L "$COMMAND_SOURCE" ]; do
+  source_dir="$(cd "$(dirname "$COMMAND_SOURCE")" && pwd)"
+  link_target="$(readlink "$COMMAND_SOURCE")"
+  case "$link_target" in
+    /*) COMMAND_SOURCE="$link_target" ;;
+    *) COMMAND_SOURCE="${source_dir}/${link_target}" ;;
+  esac
+done
+SCRIPT_DIR="$(cd "$(dirname "$COMMAND_SOURCE")" && pwd)"
+
+usage() {
+  cat <<'EOF'
+Usage: ai-workflow <command> [options]
+
+Commands:
+  init       Install project-local V2 entry and generate evidence-based profile
+  new        Create a V2 runtime task card from Core templates
+  finish     Validate Loop Closeout and apply one task state transition
+  doctor     Validate installation without running project commands
+  feedback   Produce a sanitized diagnostic report
+  assemble   Assemble a Host-resolved Agent context for one task
+  next       Resolve the next state, Gate and Agent for a task
+  transition Validate and apply one task state transition
+  build      Run the discovered Zephyr build without device operations
+  package    Build the V2 distribution package
+  version    Print the Workflow version
+EOF
+}
+
+[ "$#" -gt 0 ] || { usage; exit 2; }
+command_name="$1"
+shift
+
+case "$command_name" in
+  init|new|finish|doctor|feedback|next|transition|assemble|build)
+    exec "${SCRIPT_DIR}/commands/${command_name}.sh" "$@"
+    ;;
+  package)
+    exec "${SCRIPT_DIR}/../dist/package.sh" "$@"
+    ;;
+  version)
+    tr -d '\r\n' < "${SCRIPT_DIR}/../VERSION"
+    printf '\n'
+    ;;
+  -h|--help|help)
+    usage
+    ;;
+  *)
+    printf 'ERROR unknown command: %s\n' "$command_name" >&2
+    usage >&2
+    exit 2
+    ;;
+esac

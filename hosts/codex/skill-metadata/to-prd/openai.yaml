@@ -1,0 +1,6 @@
+interface:
+  display_name: "To PRD"
+  short_description: "Turn confirmed decisions into a PRD"
+  default_prompt: "Use $to-prd to turn confirmed decisions into an executable PRD."
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,48 @@
+schema_version: 1
+
+profile:
+  version: 1
+  generated: true
+  evidence_only: true
+
+required:
+  - project.name
+  - project.git_root
+  - stack.languages
+  - stack.frameworks
+  - paths.source
+  - paths.tests
+  - paths.docs
+  - paths.platforms
+  - commands.build
+  - commands.static_check
+  - commands.test
+  - ai.existing_configuration
+  - knowledge.architecture
+  - knowledge.risks
+  - knowledge.defects
+  - knowledge.business_rules
+
+unknown_policy:
+  undetected_scalar: unknown
+  undetected_collection: []
+  missing_knowledge: missing
+  infer_business_facts: false
+
+path_policy:
+  project_relative_only: true
+  personal_absolute_paths: false
+
+command_policy:
+  representation: argv
+  allow_eval: false
+  execute_during_discovery: false
+
+zephyr_extension:
+  applies_only_when: project.detected_kind=zephyr
+  evidence_required: true
+  unknown_board_or_application_keeps_build_unconfirmed: true
+  automatic_build: allowed
+  automatic_flash: forbidden
+  automatic_debug: forbidden
+  device_validation: manual

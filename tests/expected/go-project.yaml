@@ -1,0 +1,33 @@
+schema_version: 1
+profile:
+  version: 1
+  generated: true
+  evidence_only: true
+project:
+  name: 'go'
+  git_root: '.'
+  detected_kind: 'go'
+stack:
+  languages: ['Go']
+  frameworks: []
+paths:
+  source: ['cmd', 'internal']
+  tests: []
+  docs: ['docs']
+  platforms: []
+commands:
+  build: ['go', 'build', './...']
+  static_check: ['go', 'vet', './...']
+  test: ['go', 'test', './...']
+ai:
+  existing_configuration: []
+knowledge:
+  architecture:
+    status: present
+    sources: ['docs/architecture.md']
+  risks:
+    status: missing
+  defects:
+    status: missing
+  business_rules:
+    status: unknown

@@ -1,0 +1,1 @@
+../core/templates/technical_design_template.md

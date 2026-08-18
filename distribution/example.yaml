@@ -1,0 +1,63 @@
+schema_version: 1
+package_id: ai-workflow-example
+
+# 通用分发示例：把本仓库打包成可安装的 Workflow 分发包。
+# 自定义分发时：复制本文件为 distribution/<your-id>.yaml，
+# 修改 project_adapters / include 列表即可；发布前运行
+#   ./tool/ai_distribution_check.sh --manifest <your-id> --role developer
+
+supported:
+  project_adapters:
+    - demo-project
+  role_adapters:
+    - developer
+  client_integrations:
+    - codex
+    - cursor
+    - claude-code
+
+include:
+  reusable:
+    - README.md
+    - core/
+    - roles/developer/
+    - tool/
+    - skills/
+    - integrations/
+    - examples/demo-project/
+    - defect_memory/README.md
+    - defect_memory/template.md
+  project_adapters:
+    - adapters/demo-project/
+  distribution_metadata:
+    - distribution/README.md
+    - distribution/example.yaml
+  compatibility_entries:
+    - agents.yaml
+    - agents/
+    - workflows/
+    - templates/
+  runtime_layout_only:
+    - runtime/tasks/
+    - runtime/states/
+    - runtime/handoffs/
+    - runtime/closeouts/
+    - runtime/defects/
+
+exclude:
+  - .git/
+  - .DS_Store
+  - .idea/
+  - runtime/tasks/*.md
+  - runtime/states/*
+  - runtime/handoffs/*
+  - runtime/closeouts/*
+  - runtime/defects/*
+  - local logs, generated prompts and temporary exports
+  - account identifiers, tokens, API keys, secrets and private keys if introduced later
+
+consumer_project_requirements:
+  - run the installer from the consumer project root or pass --project-root
+  - project root exposes the paths declared by the auto-detected Project Adapter
+  - selected client integration is installed locally
+  - project validation commands are installed in the consumer environment

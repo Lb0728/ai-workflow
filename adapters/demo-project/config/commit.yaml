@@ -1,0 +1,17 @@
+schema_version: 1
+
+commit:
+  title_pattern: "TAG > title"
+  task_reference:
+    name: task
+    required_when_types: []
+    required_when_task_exists: false
+
+  allowed_tags:
+    change_types: [doc, build, test, ref]
+    separator: " | "
+
+  validation:
+    source_of_truth: AGENTS.md
+    must_match_actual_diff: true
+    never_fabricate_task_reference: true

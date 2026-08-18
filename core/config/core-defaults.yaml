@@ -1,0 +1,57 @@
+schema_version: 1
+
+core:
+  id: ai-workflow-core
+  contract_version: 1
+  migration_phase: phase4-agent-activation
+  active: true
+
+protocol:
+  risk_levels: [L1, L2, L3]
+  decision_actions: [STAY, ADVANCE, RETURN, ESCALATE, STOP, COMPLETE]
+  gate_results: [PASS, FAIL, NOT_RUN, N/A, BLOCKED]
+  validation_layers: [STATIC, RUNTIME, ACCEPTANCE]
+  done_requires_acceptance_pass: true
+  evidence_first: true
+  default_to_lowest_reasonable_cost: true
+  allow_implicit_skill_invocation: false
+
+load_order:
+  - core
+  - company_policy
+  - project_profile
+  - project_local_knowledge
+  - role
+  - runtime
+
+router:
+  active_from_core: true
+  task_types:
+    - feature
+    - bugfix
+    - tech_debt
+    - i18n_text_ui_risk
+    - architecture_boundary
+    - other
+  risk_signals:
+    - core_user_flow
+    - api_contract_changed
+    - shared_state_changed
+    - multiple_modules_affected
+    - multiple_repositories_affected
+    - similar_defect_happened_before
+    - impact_scope_unclear
+    - architecture_boundary_involved
+    - real_device_or_production_required
+  delivery_mapping:
+    L1: [micro_change, light_feature]
+    L2: [standard_delivery]
+    L3: [high_risk_delivery]
+
+compatibility:
+  runtime_owner: runtime-layout
+  protocol_routing_owner: core-with-project-profile
+  agent_owner: core-with-project-local-knowledge
+  full_config_routing_active: true
+  preserve_existing_entry_points: true
+  legacy_entry_mode: symlink

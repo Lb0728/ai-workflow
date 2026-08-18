@@ -1,0 +1,57 @@
+schema_version: 1
+
+paths:
+  project:
+    base: project_root
+    repository_rules: AGENTS.md
+    docs_index: docs/README.md
+    target_architecture: docs/target_architecture.md
+    current_architecture_status: docs/current_status.md
+    architecture_progress: docs/progress.md
+    current_architecture_deep_dive: docs/current_deep_dive.md
+    ai_link: .ai-demo-project
+
+  workflow:
+    base: workflow_root
+    legacy_agents: agents
+    legacy_skills: skills
+    legacy_workflows: workflows
+    legacy_templates: templates
+    legacy_tools: tool
+    legacy_tasks: tasks
+
+  core_assets:
+    base: workflow_root
+    registry: core/agents.yaml
+    agents: core/agents
+    workflows: core/workflows
+    templates: core/templates
+    config: core/config
+
+  runtime:
+    base: runtime_root
+    root: .
+    tasks: tasks
+    states: states
+    handoffs: handoffs
+    closeouts: closeouts
+    defects: defects
+
+  adapter_assets:
+    base: adapter_root
+
+  adapter_context:
+    base: adapter_root
+    router: context/router-context.md
+    architecture_sources: context/architecture-sources.md
+    current_project_reality: context/current-project-reality.md
+    source_of_truth: context/source-of-truth.md
+    regression_surfaces: context/regression-surfaces.md
+
+  adapter_policy:
+    base: adapter_root
+    commit: config/commit.yaml
+
+  compatibility:
+    base: workflow_root
+    legacy_tasks: tasks

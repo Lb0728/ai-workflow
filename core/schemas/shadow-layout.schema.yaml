@@ -1,0 +1,46 @@
+schema_version: 1
+schema_type: phase1-shadow-layout
+
+documents:
+  core_defaults:
+    path: core/config/core-defaults.yaml
+    required_fields:
+      - schema_version
+      - core.id
+      - core.contract_version
+      - core.migration_phase
+      - core.active
+      - protocol.risk_levels
+      - protocol.decision_actions
+      - protocol.gate_results
+      - load_order
+
+  project_profile:
+    path_template: <project>/.ai/project.yaml
+    required_fields:
+      - schema_version
+      - profile.version
+      - profile.generated
+      - project.name
+      - project.git_root
+
+  role_profile:
+    path_template: roles/<role>/role-profile.yaml
+    required_fields:
+      - schema_version
+      - role.id
+      - role.active
+      - role.stages
+
+required_project_configs:
+  - paths.yaml
+  - commands.yaml
+  - risk-rules.yaml
+  - gates.yaml
+  - i18n.yaml
+
+validation:
+  forbid_duplicate_owner: true
+  forbid_absolute_personal_paths_in_core: true
+  shadow_assets_must_be_inactive: true
+  doctor_must_not_execute_project_commands: true

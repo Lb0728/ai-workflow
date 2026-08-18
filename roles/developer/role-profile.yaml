@@ -1,0 +1,33 @@
+schema_version: 1
+
+role:
+  id: developer
+  display_name: Developer
+  migration_phase: phase4-agent-activation
+  active: true
+  stages:
+    - requirement_breakdown
+    - bugfix_diagnosis
+    - architecture_boundary
+    - coding
+    - self_test
+    - pr_review
+    - commit_ready
+
+target_ownership:
+  owns:
+    - coding_execution_policy
+    - developer_self_test_policy
+    - pr_review_policy
+    - commit_stage_participation
+  does_not_own:
+    - core_routing_protocol
+    - company_commit_policy
+    - project_facts
+    - runtime_task_evidence
+
+compatibility:
+  current_owner: core-agents-with-project-local-knowledge
+  router_selection_active: true
+  agent_selection_active: true
+  shadow_profile_may_route: false

@@ -1,0 +1,18 @@
+schema_version: 1
+
+extensions:
+  workflows:
+    project_specific: []
+
+  templates:
+    project_fields:
+      primary_artifact: project_document
+    validation_placeholders:
+      analyze: adapter.commands.static_check
+      test: adapter.commands.static_check
+      format_check: adapter.commands.static_check
+
+  gates:
+    project_gates:
+      - static_validation
+      - documentation_consistency

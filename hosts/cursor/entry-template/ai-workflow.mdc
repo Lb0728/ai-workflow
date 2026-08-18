@@ -1,0 +1,11 @@
+---
+description: Expose the project-local AI Workflow V2 through the Cursor Host.
+alwaysApply: true
+---
+
+# ai-workflow-v2
+
+Read `.ai/hosts/cursor/instructions.md` before Workflow-driven work.
+Use `.ai/project.yaml` and `.ai/ai.lock` as generated project and selection
+inputs. Reuse canonical Core, Skills, Company Policy, Role and Runtime sources;
+do not create Host-local copies of their semantics.

@@ -1,0 +1,56 @@
+schema_version: 1
+schema_type: phase3-router-slice
+
+core:
+  router:
+    path: core/agents/00_router_agent.md
+    project_terms_forbidden: true
+    owns:
+      - task_type_selection
+      - delivery_level_mapping
+      - risk_signal_protocol
+      - next_agent_selection
+      - evidence_first_routing
+
+project_inputs:
+  profile: .ai/project.yaml
+  local_knowledge:
+    - .ai/architecture/
+    - .ai/risks/
+    - .ai/defects/
+    - .ai/policies/
+
+assembly_order:
+  - core_defaults
+  - core_router
+  - project_profile
+  - project_local_knowledge_index
+  - role_profile
+  - runtime_task
+
+on_demand_context:
+  - architecture_sources
+  - current_project_reality
+  - source_of_truth
+  - regression_surfaces
+
+context_modes:
+  router_bootstrap:
+    inline:
+      - core_router
+      - project_profile
+      - project_local_knowledge_index
+      - runtime_task
+    inline_project_knowledge_bodies: false
+  L1:
+    inline_project_knowledge_bodies: false
+  L2:
+    inline_only: router_required_context
+  L3:
+    inline_only: router_required_context
+    defect_card_limit: 5
+
+compatibility:
+  legacy_router_entry: agents/00_router_agent.md
+  legacy_router_entry_mode: symlink
+  remaining_agents_owner: legacy-layout

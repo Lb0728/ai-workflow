@@ -1,0 +1,6 @@
+interface:
+  display_name: "Grill With Docs"
+  short_description: "Clarify and persist durable decisions"
+  default_prompt: "Use $grill-with-docs to clarify this request and update durable docs only when needed."
+policy:
+  allow_implicit_invocation: false

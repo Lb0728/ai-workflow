@@ -1,0 +1,6 @@
+interface:
+  display_name: "To Task Cards"
+  short_description: "Split a confirmed PRD or plan into executable task slices"
+  default_prompt: "Use $to-task-cards to split this confirmed PRD or plan into executable Task Card slices."
+policy:
+  allow_implicit_invocation: false

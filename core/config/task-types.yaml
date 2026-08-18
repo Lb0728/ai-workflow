@@ -1,0 +1,30 @@
+schema_version: 1
+
+task_types:
+  bugfix:
+    aliases: [bug, bugfix]
+    workflow_key: core.workflow.bugfix
+    loop_name: Bugfix Loop
+    default_delivery_level: ""
+    real_environment_required: false
+
+  feature:
+    aliases: [feat, feature]
+    workflow_key: core.workflow.feature
+    loop_name: Feature Delivery Loop
+    default_delivery_level: ""
+    real_environment_required: false
+
+  techdebt:
+    aliases: [task, tech, techdebt]
+    workflow_key: core.workflow.tech_debt
+    loop_name: Tech Debt Loop
+    default_delivery_level: ""
+    real_environment_required: false
+
+  device:
+    aliases: [device, d2]
+    workflow_key: core.workflow.feature
+    loop_name: Device Capability Loop
+    default_delivery_level: high_risk_delivery
+    real_environment_required: true

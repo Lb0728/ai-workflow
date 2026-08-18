@@ -1,0 +1,169 @@
+agents:
+  router:
+    file: core/agents/00_router_agent.md
+    purpose: "把原始描述转换成可执行输入，并用布尔风险信号选择 L1/L2/L3 交付强度"
+    when_to_use:
+      - "所有任务的第一入口"
+      - "测试只描述现象时"
+      - "不确定该进入哪个 Agent 时"
+    next:
+      - requirement_breakdown
+      - bugfix
+      - i18n_text_ui_risk
+    required_context:
+      - project.profile
+      - project.knowledge.index
+
+  requirement_breakdown:
+    file: core/agents/01_requirement_breakdown_agent.md
+    purpose: "把产品需求或技术债拆成最小可执行技术方案"
+    when_to_use:
+      - "产品 PRD"
+      - "开发技术债 Task"
+      - "新接口接入"
+      - "功能改造"
+      - "重构前分析"
+    next:
+      - architecture_boundary
+      - coding
+    required_context:
+      - project.profile
+      - project.knowledge.architecture
+      - project.knowledge.current_reality
+      - project.knowledge.source_of_truth
+      - project.knowledge.regression_surfaces
+
+  bugfix:
+    file: core/agents/02_bugfix_agent.md
+    purpose: "把 Bug 收敛成根因和最小修复点，按需检索缺陷 Memory 并判断是否升级"
+    when_to_use:
+      - "测试 Bug"
+      - "线上反馈"
+      - "UI 不刷新"
+      - "状态错位"
+      - "平台命令异常"
+      - "跨模块或共享状态联动异常"
+    next:
+      - requirement_breakdown
+      - bugfix
+      - architecture_boundary
+      - coding
+      - human
+    required_context:
+      - project.profile
+      - project.knowledge.risks
+      - project.knowledge.current_reality
+      - project.knowledge.source_of_truth
+      - project.knowledge.regression_surfaces
+
+  architecture_boundary:
+    file: core/agents/03_architecture_boundary_agent.md
+    purpose: "检查是否扩大旧依赖、破坏目标分层或让结构债更重"
+    when_to_use:
+      - "涉及 Project Local Knowledge 标记的旧兼容 owner"
+      - "涉及资料态、运行态或当前实体协调 owner"
+      - "涉及多 transport 或高风险平台能力"
+      - "涉及表示层直连 manager / platform"
+      - "技术债任务"
+    next:
+      - coding
+      - pr_review
+    required_context:
+      - project.profile
+      - project.knowledge.risks
+      - project.knowledge.architecture
+      - project.knowledge.current_reality
+      - project.knowledge.source_of_truth
+      - project.knowledge.regression_surfaces
+
+  coding:
+    file: core/agents/04_coding_agent.md
+    purpose: "在当前真实架构下按最小改动完成实现"
+    when_to_use:
+      - "Requirement Agent 已给出方案"
+      - "Bugfix Agent 已给出修复点"
+      - "Architecture Boundary 已确认边界"
+    next:
+      - requirement_breakdown
+      - bugfix
+      - architecture_boundary
+      - self_test
+    required_context:
+      - project.profile
+      - project.commands
+      - project.knowledge.architecture
+      - project.knowledge.current_reality
+      - project.knowledge.source_of_truth
+      - project.knowledge.regression_surfaces
+
+  self_test:
+    file: core/agents/05_self_test_agent.md
+    purpose: "按交付强度裁剪验证范围，执行必要 Gate 并形成可信提测结论"
+    when_to_use:
+      - "代码改完后"
+      - "提测前"
+      - "Bugfix 回给测试前"
+    next:
+      - requirement_breakdown
+      - bugfix
+      - coding
+      - pr_review
+      - ready_for_qa
+    required_context:
+      - project.profile
+      - project.commands
+      - project.gates
+      - project.knowledge.risks
+      - project.knowledge.current_reality
+      - project.knowledge.source_of_truth
+      - project.knowledge.regression_surfaces
+
+  pr_review:
+    file: core/agents/06_pr_review_agent.md
+    purpose: "审查真源、时序、回填、回归风险、Gate 证据和提测条件"
+    when_to_use:
+      - "提交 PR 前"
+      - "准备合入前"
+      - "核心链路改动后"
+    next:
+      - requirement_breakdown
+      - bugfix
+      - coding
+      - i18n_text_ui_risk
+      - commit
+      - loop_closeout
+    required_context:
+      - project.profile
+      - project.commands
+      - project.gates
+      - project.knowledge.risks
+      - project.knowledge.architecture
+      - project.knowledge.current_reality
+      - project.knowledge.source_of_truth
+      - project.knowledge.regression_surfaces
+
+  i18n_text_ui_risk:
+    file: core/agents/07_i18n_text_ui_risk_agent.md
+    purpose: "检查文案、多语言、UI 溢出和第三方 locale 风险"
+    when_to_use:
+      - "涉及用户可见文案"
+      - "涉及 toast/dialog/button/empty state"
+      - "涉及页面 UI"
+      - "涉及第三方组件"
+    next:
+      - commit
+    required_context:
+      - project.profile
+      - project.commands
+      - project.i18n
+      - project.knowledge.regression_surfaces
+
+  commit:
+    file: core/agents/08_commit_agent.md
+    purpose: "根据实际改动生成符合仓库规范的 commit message"
+    when_to_use:
+      - "代码、自测、review 都完成后"
+    required_context:
+      - project.profile
+      - project.commands
+      - project.policies.commit

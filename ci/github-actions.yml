@@ -1,0 +1,38 @@
+# AI Workflow V2 acceptance pipeline — GitHub Actions template.
+#
+# The repository is private on GitHub, so this is the primary CI entry.
+# The ACTIVE workflow is .github/workflows/acceptance.yml; keep the two in
+# sync (this file is the canonical copy referenced by that workflow).
+# The pipeline never runs project commands and never runs the AI agent loop.
+
+name: v2-acceptance
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  acceptance:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install shellcheck and ruby (ubuntu)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y shellcheck ruby
+
+      - name: Install shellcheck (macos)
+        if: runner.os == 'macOS'
+        run: brew install shellcheck
+
+      - name: Run V2 acceptance pipeline
+        run: bash ci/pipeline.sh --require-shellcheck

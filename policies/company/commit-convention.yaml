@@ -1,0 +1,30 @@
+schema_version: 1
+
+commit:
+  title_pattern: "[#JIRA_ID] TAG1 | TAG2 | TAG3 > title"
+  task_reference:
+    name: JIRA
+    placeholder: "[#JIRA_ID]"
+    required_when_types: [fix, feat]
+    required_when_task_exists: true
+
+  allowed_tags:
+    change_types: [fix, feat, ref, fmt, log, cleanup, doc, build]
+    optional_scopes: [ui, api, data, net, build, test, docs, config]  # 示例 scope，按项目自定义
+    separator: " | "
+
+  fix_body:
+    required: true
+    section_order:
+      - "BUG根因分析"
+      - "引入问题的提交"
+      - "引入问题时如何有效拦截"
+      - "修复后做了哪些自测"
+    unknown_value_policy: explicitly_mark_unknown
+
+  validation:
+    source_of_truth: Company Policy
+    project_supplements: .ai/policies/
+    host_entry: AGENTS.md
+    must_match_actual_diff: true
+    never_fabricate_task_reference: true

@@ -1,0 +1,35 @@
+schema_version: 1
+
+risk_rules:
+  core_user_flows:
+    - document_entry
+    - static_validation
+
+  contract_changes:
+    - file_contract
+    - command_contract
+
+  shared_state_changes:
+    - shared_document
+
+  project_high_risk_domains:
+    - release_process
+    - data_migration
+
+  repeated_defect_requires_l3: true
+  unclear_impact_requires_l3: true
+  real_device_or_production_requires_l3: true
+
+router_extensions:
+  project_categories:
+    - documentation
+    - static_check
+
+  high_risk_terms:
+    - release
+    - migration
+    - destructive_change
+
+  state_owner_terms:
+    - PROJECT_RULES
+    - static_check

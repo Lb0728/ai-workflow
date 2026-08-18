@@ -1,0 +1,1 @@
+../core/workflows/architecture_health_check.md

@@ -1,0 +1,2 @@
+ZEPHYR_BASE:PATH=/opt/zephyr
+BOARD:STRING=board_existing

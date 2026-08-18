@@ -1,0 +1,13 @@
+schema_version: 1
+
+client:
+  id: codex
+  display_name: Codex
+
+skills:
+  scope: user
+  target: ~/.agents/skills
+
+persistent_rules:
+  source: project-root AGENTS.md
+  install_required: false

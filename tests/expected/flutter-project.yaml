@@ -1,0 +1,33 @@
+schema_version: 1
+profile:
+  version: 1
+  generated: true
+  evidence_only: true
+project:
+  name: 'flutter'
+  git_root: '.'
+  detected_kind: 'flutter'
+stack:
+  languages: ['Dart']
+  frameworks: ['Flutter']
+paths:
+  source: ['lib']
+  tests: ['test']
+  docs: ['docs']
+  platforms: ['android', 'ios']
+commands:
+  build: []
+  static_check: ['flutter', 'analyze']
+  test: ['flutter', 'test']
+ai:
+  existing_configuration: []
+knowledge:
+  architecture:
+    status: present
+    sources: ['docs/architecture.md']
+  risks:
+    status: missing
+  defects:
+    status: missing
+  business_rules:
+    status: unknown

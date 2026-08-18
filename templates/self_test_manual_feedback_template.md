@@ -1,0 +1,1 @@
+../core/templates/self_test_manual_feedback_template.md

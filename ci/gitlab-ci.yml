@@ -1,0 +1,20 @@
+# AI Workflow V2 acceptance pipeline — GitLab CI template.
+#
+# Only used if the repository moves to GitLab; GitHub Actions
+# (ci/github-actions.yml) is the primary entry today.
+# The pipeline never runs project commands and never runs the AI agent loop.
+
+stages:
+  - acceptance
+
+v2-acceptance:
+  stage: acceptance
+  image: ubuntu:24.04
+  before_script:
+    - apt-get update && apt-get install -y bash git shellcheck ruby
+  script:
+    - bash ci/pipeline.sh --require-shellcheck
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_PIPELINE_SOURCE == "web"'

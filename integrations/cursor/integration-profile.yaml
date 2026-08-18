@@ -1,0 +1,14 @@
+schema_version: 1
+
+client:
+  id: cursor
+  display_name: Cursor
+
+skills:
+  scope: user
+  target: ~/.cursor/skills
+
+persistent_rules:
+  source: rules/ai-workflow.mdc
+  target: .cursor/rules/ai-workflow.mdc
+  install_required: true

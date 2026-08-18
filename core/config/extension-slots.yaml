@@ -1,0 +1,36 @@
+schema_version: 1
+
+extension_slots:
+  agents:
+    project_context_inputs:
+      owner: project_local_knowledge
+      merge: append_unique
+    role_execution_policy:
+      owner: role
+      merge: append_unique
+
+  workflows:
+    project_specific:
+      owner: project_local_knowledge
+      merge: append_unique
+
+  templates:
+    project_fields:
+      owner: project_profile
+      merge: namespaced
+    validation_placeholders:
+      owner: project_local_knowledge
+      merge: namespaced
+
+  gates:
+    project_gates:
+      owner: project_local_knowledge
+      merge: append_unique
+
+protected_core_fields:
+  - protocol.risk_levels
+  - protocol.decision_actions
+  - protocol.gate_results
+  - protocol.evidence_first
+  - protocol.default_to_lowest_reasonable_cost
+  - protocol.allow_implicit_skill_invocation

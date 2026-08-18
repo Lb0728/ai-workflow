@@ -1,0 +1,22 @@
+schema_version: 1
+schema_type: phase2-compatibility-layout
+
+canonical_owners:
+  runtime_tasks: runtime/tasks
+  project_workflow: adapters/<project>/workflows
+  project_self_test: adapters/<project>/self-test
+  project_cases: adapters/<project>/cases
+
+legacy_entries:
+  mode: symlink
+  required:
+    - tasks
+    - workflows/device_capability_loop.md
+    - self_test
+    - cases
+
+validation:
+  forbid_duplicate_active_owner: true
+  require_legacy_entry_resolution: true
+  require_rollback_contract: true
+  core_protocol_routing_must_remain_legacy: true

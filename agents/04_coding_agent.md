@@ -1,0 +1,1 @@
+../core/agents/04_coding_agent.md

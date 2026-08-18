@@ -1,0 +1,46 @@
+schema_version: 1
+
+host:
+  id: cursor
+  display_name: Cursor
+  contract: ../HOST_ADAPTER_CONTRACT.md
+
+instruction_entry:
+  filename: .cursor/rules/ai-workflow.mdc
+  template: entry-template/ai-workflow.mdc
+  instructions_template: entry-template/instructions.md
+  install_mode: managed_file
+  verification_marker: ai-workflow-v2
+  discovery_scope: repository
+
+skill_locations:
+  repository: .cursor/skills
+  user: ~/.cursor/skills
+  source_owner: skills
+
+capabilities:
+  files: true
+  shell: true
+  git: true
+  tests: true
+  approvals: true
+
+permission_model:
+  preserve_host_sandbox: true
+  preserve_host_approvals: true
+  state_changes_require_existing_authority: true
+  destructive_actions_require_explicit_authority: true
+
+state_presentation:
+  actions: [STAY, ADVANCE, RETURN, ESCALATE, STOP, COMPLETE]
+  show_gate_result: true
+  show_risk_level: true
+  show_next_action: true
+
+semantic_ownership:
+  core_protocol: false
+  skills: false
+  agents: false
+  company_policy: false
+  project_facts: false
+  runtime: false

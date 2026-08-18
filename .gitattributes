@@ -1,0 +1,2 @@
+*.sh text eol=lf
+cli/ai-workflow text eol=lf

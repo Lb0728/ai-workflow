@@ -1,0 +1,50 @@
+# Task Card Schema — 任务卡 frontmatter 与关键字段的强校验规则。
+#
+# 枚举真源在 core/config/state-machine.yaml（vocabulary / canonical_stages /
+# decision_stages）；本文件只声明“结构规则”，不重复枚举。
+# 校验器实现：core/lib/task_card.sh（tc_validate），供以下入口调用：
+#   - cli/commands/transition.sh  应用状态迁移前校验
+#   - cli/commands/doctor.sh      扫描 .ai/runtime/tasks/ 全部任务卡
+#   - cli/commands/new.sh         创建时校验 type / delivery_level
+# legacy: true 的任务卡跳过严格校验（与 Router 的旧格式兼容路径一致）。
+
+schema_version: 1
+schema_type: task-card
+
+frontmatter:
+  type:
+    required: true
+    vocabulary: task_types
+  delivery_level:
+    required: true
+    vocabulary: delivery_levels
+  status:
+    required: false
+    rule: 规范化后必须是 canonical_stages 之一；缺省视为 analyze
+  self_test_level:
+    required: false
+    vocabulary: self_test_levels
+  priority:
+    required: false
+    vocabulary: priorities
+  iteration:
+    required: false
+    rule: 必须是非负整数
+  max_iterations:
+    required: false
+    rule: 必须是非负整数
+  legacy:
+    required: false
+    rule: 只能为 true / false；为 true 时跳过本 schema 的严格校验
+
+delivery_level_rules:
+  high_risk_delivery:
+    - 必须填写交付风险信号（## 交付风险信号，9 个布尔信号 + 风险证据）
+    - alignment_required 必须为 true
+    - self_test_level 必须为 specialized
+    - alignment_status 只能为 pending / confirmed
+    - status 为 implement 时，alignment_status 必须为 confirmed，
+      且必须填写 alignment_confirmed_at 与 alignment_confirmation_note
+
+enum_sources:
+  - core/config/state-machine.yaml

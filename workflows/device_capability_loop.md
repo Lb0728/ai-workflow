@@ -1,0 +1,1 @@
+../adapters/satellai/workflows/device_capability_loop.md

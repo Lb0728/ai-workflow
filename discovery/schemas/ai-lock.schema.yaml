@@ -1,0 +1,16 @@
+schema_version: 1
+
+lock:
+  version: 1
+  generated: true
+  required:
+    - workflow.version
+    - workflow.source_commit
+    - host.id
+    - role.id
+    - project_profile.version
+  forbidden:
+    - credentials
+    - tokens
+    - personal_absolute_paths
+    - runtime_evidence

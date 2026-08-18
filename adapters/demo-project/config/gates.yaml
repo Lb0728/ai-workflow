@@ -1,0 +1,15 @@
+schema_version: 1
+
+project_gates:
+  static_validation:
+    enabled_when:
+      - project_file_changed
+
+  documentation_consistency:
+    enabled_when:
+      - project_rule_changed
+      - architecture_document_changed
+
+manual_verification:
+  may_block_ready_for_qa: true
+  blocks_coding_by_default: false

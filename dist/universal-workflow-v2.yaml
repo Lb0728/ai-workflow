@@ -1,0 +1,50 @@
+schema_version: 1
+
+package:
+  id: universal-workflow-v2
+  version_source: VERSION
+  activation: project_local_init
+  release_state: internal_developer_trial
+
+includes:
+  - VERSION
+  - core/LOADER_CONTRACT_V2.md
+  - core/agents.yaml
+  - core/agents/
+  - core/config/
+  - core/lib/
+  - core/loader/
+  - core/router/
+  - core/schemas/
+  - core/templates/
+  - core/workflows/
+  - hosts/
+  - policies/company/
+  - roles/developer/
+  - skills/
+  - discovery/
+  - runtime-template/
+  - cli/
+  - compat/legacy/
+  - docs/
+  - dist/universal-workflow-v2.yaml
+  - dist/install.sh
+
+excludes:
+  - adapters/
+  - core/templates/issue_intake_template.md
+  - integrations/
+  - migration/
+  - pilot/
+  - runtime/
+  - distribution/
+  - tests/
+  - project_runtime_evidence
+  - credentials
+  - personal_absolute_paths
+
+release_guards:
+  require_clean_source_by_default: true
+  include_v1_project_adapters: false
+  include_runtime_instances: false
+  automatic_publish: false
