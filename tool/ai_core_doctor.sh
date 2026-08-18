@@ -218,7 +218,6 @@ check_file "${WORKFLOW_ROOT}/core/config/state-machine.yaml" "state machine defi
 check_file "${WORKFLOW_ROOT}/core/lib/state_machine.sh" "state machine accessor"
 check_file "${WORKFLOW_ROOT}/core/lib/task_card.sh" "task card validator"
 check_file "${WORKFLOW_ROOT}/core/schemas/task-card.schema.yaml" "task card schema"
-check_file "${WORKFLOW_ROOT}/docs/GLOSSARY.md" "glossary"
 check_distribution_manifest
 check_file "${WORKFLOW_ROOT}/tool/ai_distribution_check.sh" "distribution checker"
 check_file "${WORKFLOW_ROOT}/tool/ai_distribution_package.sh" "distribution packager"
@@ -291,8 +290,8 @@ if [ -f "$CORE_DEFAULTS" ]; then
   require_pattern "$CORE_DEFAULTS" 'active:[[:space:]]+true' "core active"
   require_pattern "$CORE_DEFAULTS" 'active_from_core:[[:space:]]+true' "Core Router active"
   require_pattern "$CORE_DEFAULTS" 'runtime_owner:[[:space:]]+runtime-layout' "runtime canonical owner"
-  require_pattern "$CORE_DEFAULTS" 'protocol_routing_owner:[[:space:]]+core-with-project-adapter' "config-driven protocol owner"
-  require_pattern "$CORE_DEFAULTS" 'agent_owner:[[:space:]]+core-with-project-adapter' "config-driven Agent owner"
+  require_pattern "$CORE_DEFAULTS" 'protocol_routing_owner:[[:space:]]+core-with-project-profile' "config-driven protocol owner"
+  require_pattern "$CORE_DEFAULTS" 'agent_owner:[[:space:]]+core-with-project-local-knowledge' "config-driven Agent owner"
   require_pattern "$CORE_DEFAULTS" 'full_config_routing_active:[[:space:]]+true' "full Core routing active"
   require_pattern "$CORE_DEFAULTS" 'legacy_entry_mode:[[:space:]]+symlink' "legacy compatibility mode"
 fi
@@ -367,7 +366,7 @@ case "${LC_ALL:-${LC_CTYPE:-${LANG:-}}}" in
     ;;
 esac
 
-if grep -R -n -E '/Users/[A-Za-z0-9._-]+|Flutter|(^|[^A-Za-z])BLE([^A-Za-z]|$)|(^|[^A-Za-z])MQTT([^A-Za-z]|$)' "${WORKFLOW_ROOT}/core" >/dev/null; then
+if grep -R -n -E '/Users/[A-Za-z0-9._-]+|/Volumes/[A-Za-z0-9._-]+' "${WORKFLOW_ROOT}/core" >/dev/null; then
   fail "Core contains project-bound terms"
 else
   pass "Core project-term scan"

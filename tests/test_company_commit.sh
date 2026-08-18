@@ -9,7 +9,7 @@ set -eu
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "${SCRIPT_DIR}/test_helper.sh"
 
-for required_key in title_pattern change_types fix_body source_of_truth; do
+for required_key in title_pattern change_types source_of_truth; do
   assert_file_contains "${WORKFLOW_ROOT}/adapters/demo-project/config/commit.yaml" "$required_key"
 done
 

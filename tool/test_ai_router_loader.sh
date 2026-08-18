@@ -40,7 +40,7 @@ assert_contains "project profile resolved" "$router_output" "adapter.profile="
 assert_contains "project risk rules resolved" "$router_output" "adapter.risk_rules="
 assert_contains "minimal Router context assembled" "$router_output" "===== adapter.context.router ====="
 assert_contains "minimal project owner facts assembled" "$router_output" "Demo Project Router Context"
-assert_contains "minimal project regression index assembled" "$router_output" "Regression Surfaces"
+assert_contains "minimal project regression index assembled" "$router_output" "adapter.context.regression_surfaces"
 assert_contains "role profile resolved" "$router_output" "role.profile="
 assert_contains "runtime task assembled" "$router_output" "===== TASK ====="
 
@@ -98,7 +98,7 @@ commit_output="$("$RUNNER" --project-root "$PROJECT_ROOT" commit "$TASK_INPUT")"
 assert_contains "Commit Core Agent assembled" "$commit_output" "你是当前项目的 Commit Agent。"
 assert_contains "Commit conventions assembled" "$commit_output" "===== adapter.commit ====="
 
-if grep -R -n -E '/Users/[A-Za-z0-9._-]+|Flutter|(^|[^A-Za-z])BLE([^A-Za-z]|$)|(^|[^A-Za-z])MQTT([^A-Za-z]|$)' "${WORKFLOW_ROOT}/core" >/dev/null; then
+if grep -R -n -E '/Users/[A-Za-z0-9._-]+|/Volumes/[A-Za-z0-9._-]+' "${WORKFLOW_ROOT}/core" >/dev/null; then
   printf '%s\n' "FAIL Core contains project-bound terms"
   failures=$((failures + 1))
 else

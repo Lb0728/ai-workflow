@@ -17,15 +17,20 @@ mkdir -p \
   "$TEST_HOME" \
   "${PROJECT_ROOT}/scripts" \
   "${PROJECT_ROOT}/lib" \
-  "${PROJECT_ROOT}/test"
+  "${PROJECT_ROOT}/test" \
+  "${PROJECT_ROOT}/docs"
 
-# Demo-project detection markers (see adapters/demo-project/project-profile.yaml).
+# Demo-project detection markers (see adapters/demo-project/project-profile.yaml)
+# and declared project paths (see adapters/demo-project/config/paths.yaml).
 : > "${PROJECT_ROOT}/.ai-demo-project"
 printf '%s\n' "# Demo fixture" > "${PROJECT_ROOT}/AGENTS.md"
 printf '%s\n' '#!/usr/bin/env bash' 'set -e' 'exit 0' \
   > "${PROJECT_ROOT}/scripts/static_check.sh"
 chmod +x "${PROJECT_ROOT}/scripts/static_check.sh"
 printf '%s\n' 'void main() {}' > "${PROJECT_ROOT}/lib/main.dart"
+for doc in README.md target_architecture.md current_status.md progress.md current_deep_dive.md; do
+  printf '%s\n' "# ${doc}" > "${PROJECT_ROOT}/docs/${doc}"
+done
 
 git -C "$PROJECT_ROOT" init -q
 git -C "$PROJECT_ROOT" config user.name "AI Install Test"

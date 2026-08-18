@@ -2,8 +2,8 @@
 *.tmp
 .idea/
 # 真实任务实例永不入库；examples/tasks/ 提供脱敏示例
-runtime/tasks/
-tasks/
+runtime/tasks/*
+!runtime/tasks/.gitkeep
 # 分发包产物由 dist/package.sh 生成，发布时再提交
 dist/artifacts/*.tar.gz
 dist/artifacts/*.sha256
