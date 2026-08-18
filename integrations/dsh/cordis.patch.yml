@@ -1,0 +1,15 @@
+# AI Workflow dsh bundle patch.
+#
+# Inserts the AI Workflow plugin row over the profile root. The plugin
+# registers a packaged skill provider (`ai-workflow`) that exposes the skills
+# shipped under ./skills — the same five explicit skills as the repository
+# (`grill-me`, `grill-with-docs`, `to-prd`, `to-task-cards`, `handoff`) plus
+# `ai-workflow`, which teaches the agent to drive the loop with the
+# `ai-workflow` CLI (next -> execute -> finish).
+#
+# No other row is touched: the filesystem skill roots, agent instructions and
+# tool set stay as configured by the base bundles and the user's own patch.
+
+- insert:
+    - id: ai-workflow
+      name: ai-workflow-dsh

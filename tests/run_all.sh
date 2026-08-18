@@ -24,6 +24,7 @@ tests=(
   test_router_v2.sh
   test_transition.sh
   test_task_card_schema.sh
+  test_dsh_integration.sh
   test_quality_gate.sh
   test_cross_host_router.sh
   test_context_budget.sh

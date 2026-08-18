@@ -1,0 +1,27 @@
+{
+  "name": "ai-workflow-dsh",
+  "version": "2.0.0-rc.5",
+  "description": "DeepSeek Harness integration for AI Workflow: ships the grill-me / grill-with-docs / to-prd / to-task-cards / handoff skills plus the ai-workflow loop skill as a dsh profile bundle",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./skills/*": "./skills/*"
+  },
+  "files": [
+    "lib",
+    "skills",
+    "cordis.patch.yml",
+    "README.md"
+  ],
+  "scripts": {
+    "prepack": "node scripts/copy-skills.mjs"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "license": "MIT"
+}
