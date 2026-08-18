@@ -16,7 +16,7 @@ if grep -R -E -i -n \
 fi
 
 if grep -R -E -i -n \
-  'Flutter|Dart|Swift|Kotlin|Android|(^|[^[:alnum:]_])iOS([^[:alnum:]_]|$)|Xcode|TestFlight|Figma|IMEI
+  'Flutter|Dart|Swift|Kotlin|Android|(^|[^[:alnum:]_])iOS([^[:alnum:]_]|$)|Xcode|TestFlight|Figma|IMEI' \
   "${WORKFLOW_ROOT}/core" \
   >"$boundary_output"; then
   sed -n '1,120p' "$boundary_output" >&2
