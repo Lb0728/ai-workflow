@@ -45,7 +45,7 @@ if [ ! -f "$archive_path" ] || [ ! -f "$checksum_path" ]; then
 fi
 
 (
-  cd "$OUTPUT_DIR"
+  cd "$OUTPUT_DIR" || exit 1
   shasum -a 256 -c "$(basename "$checksum_path")" >/dev/null
 )
 
