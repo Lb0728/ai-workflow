@@ -205,8 +205,11 @@ first_gate_value() {
 section_content() {
   local heading="$1"
   local file="$2"
+  # LC_ALL=C: macOS BSD awk compares multibyte strings via locale collation,
+  # which is corrupted under en_US.UTF-8 (e.g. "## 下一步决策" == "## 提测门禁结果").
+  # C locale forces byte comparison; the file and patterns stay UTF-8 bytes.
   awk -v heading="## ${heading}" '
-    $0 == heading { in_section = 1; next }
+    index($0, heading) == 1 && length($0) == length(heading) { in_section = 1; next }
     in_section && /^## / { exit }
     in_section { print }
   ' "$file"

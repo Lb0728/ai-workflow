@@ -71,20 +71,20 @@ trap 'rm -f "$TMP_OUTPUT"' EXIT
 "${RUN_ARGS[@]}" "${WORKFLOW_ROOT}/core/router/ai_loop_next_v2.sh" "${POSITIONAL[@]}" > "$TMP_OUTPUT"
 
 awk '
-  $0 == "## 风险自适应路由" ||
-  $0 == "## 门禁快照" ||
-  $0 == "## Bugfix 下一步决策" ||
-  $0 == "## 决策协议错误" ||
-  $0 == "## 缺失门禁" ||
-  $0 == "## 失败门禁" ||
-  $0 == "## 阻塞门禁" ||
-  $0 == "## 带风险门禁" ||
-  $0 == "## 当前等级必需门禁缺失" ||
-  $0 == "## 当前等级必需门禁失败" ||
-  $0 == "## 当前等级必需门禁阻塞" ||
-  $0 == "## 当前等级带风险门禁" ||
-  $0 == "## Context Assembly" ||
-  $0 == "## 可选：完整 Agent 上下文" {
+  index($0, "## 风险自适应路由") == 1 && length($0) == length("## 风险自适应路由") ||
+  index($0, "## 门禁快照") == 1 && length($0) == length("## 门禁快照") ||
+  index($0, "## Bugfix 下一步决策") == 1 && length($0) == length("## Bugfix 下一步决策") ||
+  index($0, "## 决策协议错误") == 1 && length($0) == length("## 决策协议错误") ||
+  index($0, "## 缺失门禁") == 1 && length($0) == length("## 缺失门禁") ||
+  index($0, "## 失败门禁") == 1 && length($0) == length("## 失败门禁") ||
+  index($0, "## 阻塞门禁") == 1 && length($0) == length("## 阻塞门禁") ||
+  index($0, "## 带风险门禁") == 1 && length($0) == length("## 带风险门禁") ||
+  index($0, "## 当前等级必需门禁缺失") == 1 && length($0) == length("## 当前等级必需门禁缺失") ||
+  index($0, "## 当前等级必需门禁失败") == 1 && length($0) == length("## 当前等级必需门禁失败") ||
+  index($0, "## 当前等级必需门禁阻塞") == 1 && length($0) == length("## 当前等级必需门禁阻塞") ||
+  index($0, "## 当前等级带风险门禁") == 1 && length($0) == length("## 当前等级带风险门禁") ||
+  index($0, "## Context Assembly") == 1 && length($0) == length("## Context Assembly") ||
+  index($0, "## 可选：完整 Agent 上下文") == 1 && length($0) == length("## 可选：完整 Agent 上下文") {
     skip = 1
     next
   }

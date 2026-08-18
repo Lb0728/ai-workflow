@@ -158,7 +158,7 @@ section_content() {
   local heading="$1"
   local file="$2"
   awk -v heading="## ${heading}" '
-    $0 == heading { in_section = 1; next }
+    index($0, heading) == 1 && length($0) == length(heading) { in_section = 1; next }
     in_section && /^## / { exit }
     in_section { print }
   ' "$file"

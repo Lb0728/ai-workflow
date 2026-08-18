@@ -51,7 +51,7 @@ front() {
 
 section() {
   awk -v h="$1" -v k="$2" '
-    $0=="## " h {on=1;next}
+    index($0, "## " h) == 1 && length($0) == length("## " h) {on=1;next}
     on && /^## / {exit}
     on && $0 ~ "^- " k "[：:]" {
       sub("^- " k "[：:][[:space:]]*", "", $0)
@@ -63,7 +63,7 @@ section() {
 
 section_content() {
   awk -v h="$1" '
-    $0=="## " h {on=1;next}
+    index($0, "## " h) == 1 && length($0) == length("## " h) {on=1;next}
     on && /^## / {exit}
     on {print}
   ' "$2"

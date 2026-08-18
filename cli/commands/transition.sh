@@ -43,7 +43,7 @@ else
 fi
 
 front() { awk -F': *' -v k="$1" '$0=="---"{n++;next} n==1 && $1==k{print $2;exit}' "$TASK_FILE" | tr -d "'\""; }
-section() { awk -v h="$1" -v k="$2" '$0=="## " h {on=1;next} on && /^## /{exit} on && $0 ~ "^- " k "[：:]" {sub("^- " k "[：:][[:space:]]*", ""); print; exit}' "$TASK_FILE"; }
+section() { awk -v h="$1" -v k="$2" 'index($0, "## " h) == 1 && length($0) == length("## " h) {on=1;next} on && /^## /{exit} on && $0 ~ "^- " k "[：:]" {sub("^- " k "[：:][[:space:]]*", ""); print; exit}' "$TASK_FILE"; }
 # to_loop / to_decision / allowed are provided by core/lib/state_machine.sh:
 #   to_loop    -> sm_decision_to_loop
 #   to_decision -> sm_loop_to_decision
