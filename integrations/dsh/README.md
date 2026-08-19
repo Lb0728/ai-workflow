@@ -43,6 +43,16 @@ dsh plugin --profile web add ai-workflow-dsh
 dsh plugin --profile web remove ai-workflow-dsh
 ```
 
+> ⚠️ **必须用 `dsh plugin remove` 卸载**。直接在 profile 目录里
+> `pnpm remove` 只删除依赖，不会同步 `package.json` 里
+> `dsh.profile.bundles` 层栈——下次启动会报
+> `cannot resolve profile bundle "ai-workflow-dsh"`。也不要用编辑器
+> 手改 `package.json` 的 bundles 列表（改坏 JSON 同样会导致 profile
+> 无法启动）。`dsh plugin remove` 会同时完成依赖删除与层栈清理。
+>
+> 安装后请**重启 web 会话验证**：若 profile 启动失败，回退命令与上面
+> 相同；层栈恢复为空（只剩 base / web-app bundles）即回到原状。
+
 ## 工作原理
 
 - `package.json` 声明 `dsh.bundle.patch: ./cordis.patch.yml`，使本包成为
